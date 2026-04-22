@@ -100,6 +100,18 @@
             line-height: var(--font-body-line-height);
             font-size: var(--font-body-size);
             overflow-x: hidden;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: -1;
         }
         
         h1, h2, h3, h4 {
@@ -515,11 +527,14 @@
             color: var(--color-neutral-white-70);
             margin-bottom: var(--space-xl);
             max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
         }
         
         .hero-buttons {
             display: flex;
             gap: var(--space-md);
+            justify-content: center;
         }
         
         @media (max-width: 767px) {
@@ -1077,7 +1092,7 @@
                             <div class="feature-icon">🤝</div>
                             <div>
                                 <h4>一对一深度沟通</h4>
-                                <p>并非机器解牌，而是与真人大师实时连线，针对你的具体情况深入分析。</p>
+                                <p>我们有专业的大师连线解答，也有专业训练的AI，24小时随时为你解惑。</p>
                             </div>
                         </div>
                         <div class="feature-item">
@@ -1099,7 +1114,7 @@
                 <div class="phone-mockup">
                     <div class="mockup-img">
                         <!-- APP界面预览 -->
-                        <div style="width:100%;height:100%;background:linear-gradient(135deg, #9D8DF1, #2D1B69);display:flex;align-items:center;justify-content:center;color:white;font-size:20px;font-weight:bold;">APP界面预览</div>
+                        <img src="image/引导页2.png" alt="APP界面预览" style="width:100%;height:100%;object-fit:cover;">
                     </div>
                 </div>
             </div>
