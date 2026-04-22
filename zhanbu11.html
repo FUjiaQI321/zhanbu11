@@ -1,0 +1,1661 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>星穹秘境 - 专业占卜APP，探索命运轨迹</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* === 全局CSS变量 === */
+        :root {
+            /* 1. 色彩系统 */
+            --color-primary-1: #2D1B69;
+            --color-primary-1-90: rgba(45, 27, 105, 0.9);
+            --color-primary-1-70: rgba(45, 27, 105, 0.7);
+            --color-primary-1-20: rgba(45, 27, 105, 0.2);
+            --color-primary-2: #1A0F3D;
+            --color-primary-2-90: rgba(26, 15, 61, 0.9);
+            --color-accent-1: #D4AF37;
+            --color-accent-1-60: rgba(212, 175, 55, 0.6);
+            --color-accent-1-30: rgba(212, 175, 55, 0.3);
+            --color-accent-2: #9D8DF1;
+            --color-accent-2-40: rgba(157, 141, 241, 0.4);
+            --color-neutral-white: #FFFFFF;
+            --color-neutral-white-70: rgba(255, 255, 255, 0.7);
+            --color-neutral-lightgray: #E0E0E0;
+            --color-neutral-darkgray: #616161;
+            
+            /* 2. 间距系统 */
+            --space-xs: 8px;
+            --space-sm: 16px;
+            --space-md: 24px;
+            --space-lg: 32px;
+            --space-xl: 48px;
+            --space-2xl: 80px;
+            --space-3xl: 120px;
+            
+            /* 3. 排版系统 (默认PC) */
+            --font-h1-size: 48px;
+            --font-h1-line-height: 58px;
+            --font-h2-size: 32px;
+            --font-h2-line-height: 40px;
+            --font-h3-size: 24px;
+            --font-h3-line-height: 32px;
+            --font-body-size: 16px;
+            --font-body-line-height: 26px;
+            --font-caption-size: 14px;
+            --font-caption-line-height: 22px;
+            --font-btn-size: 16px;
+            --font-btn-line-height: 24px;
+            
+            /* 4. 圆角与阴影 */
+            --radius-md: 8px;
+            --radius-round: 50%;
+            --shadow-base: 0 4px 20px rgba(0, 0, 0, 0.15);
+            --shadow-hover: 0 8px 30px rgba(212, 175, 55, 0.2);
+            
+            /* 5. 动效 */
+            --transition-base: all 300ms ease-in-out;
+        }
+        
+        /* 平板端响应式排版 */
+        @media (max-width: 1199px) and (min-width: 768px) {
+            :root {
+                --font-h1-size: 36px;
+                --font-h1-line-height: 44px;
+                --font-h2-size: 28px;
+                --font-h2-line-height: 36px;
+                --font-h3-size: 22px;
+                --font-h3-line-height: 30px;
+            }
+        }
+        
+        /* 移动端响应式排版 */
+        @media (max-width: 767px) {
+            :root {
+                --font-h1-size: 32px;
+                --font-h1-line-height: 40px;
+                --font-h2-size: 24px;
+                --font-h2-line-height: 32px;
+                --font-h3-size: 20px;
+                --font-h3-line-height: 28px;
+            }
+        }
+        
+        /* === 全局重置与基础样式 === */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--color-neutral-white);
+            background-color: var(--color-primary-1);
+            line-height: var(--font-body-line-height);
+            font-size: var(--font-body-size);
+            overflow-x: hidden;
+        }
+        
+        h1, h2, h3, h4 {
+            font-weight: 600;
+        }
+        
+        h1 {
+            font-size: var(--font-h1-size);
+            line-height: var(--font-h1-line-height);
+            font-weight: 700;
+        }
+        
+        h2 {
+            font-size: var(--font-h2-size);
+            line-height: var(--font-h2-line-height);
+        }
+        
+        h3 {
+            font-size: var(--font-h3-size);
+            line-height: var(--font-h3-line-height);
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        ul {
+            list-style: none;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-md);
+        }
+        
+        /* 响应式容器宽度 */
+        @media (max-width: 1199px) and (min-width: 768px) {
+            .container {
+                max-width: 90%;
+            }
+        }
+        
+        @media (max-width: 767px) {
+            .container {
+                max-width: 92%;
+            }
+        }
+        
+        /* 板块通用间距 */
+        section {
+            margin-bottom: var(--space-3xl);
+        }
+        
+        @media (max-width: 1199px) and (min-width: 768px) {
+            section {
+                margin-bottom: var(--space-2xl);
+            }
+        }
+        
+        @media (max-width: 767px) {
+            section {
+                margin-bottom: var(--space-xl);
+            }
+        }
+        
+        /* 星空粒子Canvas */
+        #starfield {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        /* 旋转星盘背景 */
+        .star-disk {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 120vw;
+            height: 120vw;
+            max-width: 1500px;
+            max-height: 1500px;
+            background: radial-gradient(circle, rgba(157, 141, 241, 0.1) 0%, rgba(45, 27, 105, 0) 70%);
+            opacity: 0.15;
+            z-index: -1;
+            animation: rotate 60s linear infinite;
+        }
+        
+        @keyframes rotate {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        
+        /* === 通用组件样式 === */
+        /* 1. 导航栏 */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            background-color: transparent;
+            z-index: 1000;
+            transition: var(--transition-base);
+        }
+        
+        .navbar.scrolled {
+            height: 64px;
+            background-color: var(--color-primary-2-90);
+            backdrop-filter: blur(12px);
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+        
+        .logo {
+            height: 40px;
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #D4AF37, #9D8DF1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 48px;
+        }
+        
+        .nav-links a {
+            position: relative;
+            font-weight: 500;
+            transition: var(--transition-base);
+        }
+        
+        .nav-links a:hover {
+            color: var(--color-accent-1);
+        }
+        
+        .nav-links a:hover::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--color-accent-1);
+        }
+        
+        /* 汉堡菜单 (移动端) */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 24px;
+            height: 20px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .hamburger span {
+            display: block;
+            width: 100%;
+            height: 2px;
+            background-color: var(--color-neutral-white);
+            transition: var(--transition-base);
+        }
+        
+        /* 移动端侧边栏 */
+        .mobile-nav {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 80%;
+            max-width: 320px;
+            height: 100vh;
+            background-color: var(--color-primary-2);
+            z-index: 1001;
+            padding: var(--space-2xl) var(--space-xl);
+            transition: right 0.4s ease-out;
+            backdrop-filter: blur(12px);
+        }
+        
+        .mobile-nav.active {
+            right: 0;
+        }
+        
+        .mobile-nav-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-2xl);
+        }
+        
+        .close-nav {
+            background: none;
+            border: none;
+            font-size: 28px;
+            color: var(--color-neutral-white);
+            cursor: pointer;
+        }
+        
+        .mobile-nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-lg);
+        }
+        
+        .mobile-nav-links a {
+            font-size: 18px;
+            padding: var(--space-sm) 0;
+        }
+        
+        /* 移动端导航栏样式 */
+        @media (max-width: 767px) {
+            .navbar {
+                height: 56px;
+                background-color: var(--color-primary-2-90);
+                backdrop-filter: blur(12px);
+            }
+            .logo {
+                height: 32px;
+                font-size: 20px;
+            }
+            .nav-links, .nav-actions .btn-primary {
+                display: none;
+            }
+            .hamburger {
+                display: flex;
+            }
+        }
+        
+        /* 2. 按钮组件 */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            border-radius: var(--radius-md);
+            font-family: inherit;
+            font-weight: 500;
+            font-size: var(--font-btn-size);
+            line-height: var(--font-btn-line-height);
+            cursor: pointer;
+            transition: var(--transition-base);
+            white-space: nowrap;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--color-accent-1), #E8C76E);
+            color: var(--color-primary-2);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.3);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: var(--color-neutral-white);
+            border: 1px solid var(--color-neutral-white);
+        }
+        
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: var(--color-accent-1);
+        }
+        
+        .btn-text {
+            background: transparent;
+            color: var(--color-neutral-white);
+        }
+        
+        .btn-text:hover {
+            color: var(--color-accent-1);
+        }
+        
+        /* 按钮尺寸 */
+        .btn-large {
+            height: 48px;
+            padding: 0 var(--space-lg);
+        }
+        
+        .btn-medium {
+            height: 40px;
+            padding: 0 var(--space-md);
+        }
+        
+        .btn-small {
+            height: 32px;
+            padding: 0 var(--space-sm);
+        }
+        
+        /* 3. 基础卡片组件 */
+        .card {
+            background-color: var(--color-primary-1-70);
+            border-radius: var(--radius-md);
+            padding: var(--space-md);
+            border: 1px solid var(--color-accent-2-40);
+            backdrop-filter: blur(12px);
+            transition: var(--transition-base);
+        }
+        
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+            border-color: rgba(212, 175, 55, 0.3);
+        }
+        
+        /* 4. 悬浮全局组件 */
+        .floating-components {
+            position: fixed;
+            right: var(--space-lg);
+            bottom: var(--space-lg);
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--space-md);
+        }
+        
+        .floating-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition-base);
+            box-shadow: var(--shadow-base);
+        }
+        
+        .floating-btn.large {
+            width: 60px;
+            height: 60px;
+        }
+        
+        #backToTop {
+            background: linear-gradient(135deg, var(--color-accent-1), #E8C76E);
+            color: var(--color-primary-2);
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        #backToTop.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        #onlineService {
+            background-color: var(--color-accent-2);
+            color: var(--color-neutral-white);
+        }
+        
+        #dailyFortune {
+            background: linear-gradient(135deg, #9D8DF1, #2D1B69);
+            color: var(--color-neutral-white);
+            animation: breathe 3s infinite ease-in-out;
+        }
+        
+        @keyframes breathe {
+            0%, 100% { box-shadow: 0 0 10px rgba(157, 141, 241, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(157, 141, 241, 0.8); }
+        }
+        
+        /* === 首页各板块样式 === */
+        /* 板块1：首屏英雄区 */
+        .hero-section {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding-top: 80px; /* 为固定导航栏留出空间 */
+            padding-bottom: var(--space-3xl);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero-title {
+            background: linear-gradient(135deg, var(--color-accent-1), #9D8DF1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: var(--space-md);
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+        }
+        
+        .hero-subtitle {
+            font-size: var(--font-h3-size);
+            color: var(--color-neutral-white-70);
+            margin-bottom: var(--space-xl);
+            max-width: 600px;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: var(--space-md);
+        }
+        
+        @media (max-width: 767px) {
+            .hero-buttons {
+                flex-direction: column;
+                width: 100%;
+                max-width: 300px;
+            }
+            .hero-buttons .btn {
+                width: 100%;
+            }
+        }
+        
+        /* 板块2：核心占卜服务 */
+        .services-section {
+            padding-top: var(--space-3xl);
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: var(--space-xl);
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-md);
+        }
+        
+        .service-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            height: 100%;
+        }
+        
+        .service-icon {
+            width: 64px;
+            height: 64px;
+            margin-bottom: var(--space-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: var(--color-accent-1);
+        }
+        
+        .service-card h3 {
+            margin-bottom: var(--space-sm);
+        }
+        
+        .service-card p {
+            color: var(--color-neutral-white-70);
+            margin-bottom: var(--space-lg);
+            flex-grow: 1;
+        }
+        
+        @media (max-width: 1199px) and (min-width: 768px) {
+            .services-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 767px) {
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* 板块3：APP核心特色 */
+        .features-section .container {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2xl);
+        }
+        
+        .features-content {
+            flex: 1;
+        }
+        
+        .feature-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+            margin-top: var(--space-lg);
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-sm);
+        }
+        
+        .feature-icon {
+            font-size: 24px;
+            color: var(--color-accent-1);
+            flex-shrink: 0;
+        }
+        
+        .phone-mockup {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .mockup-img {
+            width: 320px;
+            height: 640px;
+            border-radius: 32px;
+            background: linear-gradient(135deg, var(--color-primary-1), var(--color-accent-2));
+            box-shadow: var(--shadow-hover);
+            border: 8px solid var(--color-primary-2);
+            overflow: hidden;
+        }
+        
+        .mockup-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        @media (max-width: 1199px) and (min-width: 768px) {
+            .features-section .container {
+                flex-direction: column;
+            }
+            .phone-mockup {
+                order: -1;
+            }
+        }
+        
+        @media (max-width: 767px) {
+            .features-section .container {
+                flex-direction: column;
+            }
+            .phone-mockup {
+                order: -1;
+            }
+            .mockup-img {
+                width: 280px;
+                height: 560px;
+            }
+        }
+        
+        /* 板块4：用户真实评价 */
+        .testimonials-section {
+            overflow: hidden;
+        }
+        
+        .testimonials-container {
+            display: flex;
+            gap: var(--space-md);
+            overflow-x: auto;
+            padding: var(--space-sm) 0;
+            scrollbar-width: none; /* Firefox */
+        }
+        
+        .testimonials-container::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Edge */
+        }
+        
+        .testimonial-card {
+            flex: 0 0 auto;
+            width: 280px;
+            height: 240px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            margin-bottom: var(--space-sm);
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--color-accent-2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .testimonial-content {
+            color: var(--color-neutral-white-70);
+            flex-grow: 1;
+            overflow: hidden;
+        }
+        
+        .testimonial-tag {
+            display: inline-block;
+            padding: 4px var(--space-sm);
+            background-color: rgba(157, 141, 241, 0.2);
+            border-radius: 20px;
+            font-size: 12px;
+            margin-top: var(--space-sm);
+        }
+        
+        @media (max-width: 1199px) and (min-width: 768px) {
+            .testimonial-card {
+                width: 320px;
+            }
+        }
+        
+        @media (max-width: 767px) {
+            .testimonial-card {
+                width: 280px;
+            }
+        }
+        
+        /* 板块5：下载引导区 */
+        .cta-section .container {
+            background: linear-gradient(135deg, rgba(45, 27, 105, 0.8), rgba(157, 141, 241, 0.3));
+            border-radius: 16px;
+            padding: var(--space-2xl);
+            text-align: center;
+        }
+        
+        .cta-title {
+            margin-bottom: var(--space-sm);
+        }
+        
+        .cta-subtitle {
+            font-size: var(--font-h3-size);
+            color: var(--color-neutral-white-70);
+            margin-bottom: var(--space-xl);
+        }
+        
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-md);
+            margin-bottom: var(--space-xl);
+        }
+        
+        .cta-qr {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto;
+            background-color: var(--color-neutral-white);
+            border-radius: var(--space-xs);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-primary-2);
+            font-weight: bold;
+        }
+        
+        @media (max-width: 767px) {
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            .cta-buttons .btn {
+                width: 200px;
+            }
+        }
+        
+        /* 板块6：页脚 */
+        footer {
+            background-color: var(--color-primary-2);
+            padding: var(--space-2xl) 0;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--space-2xl);
+            margin-bottom: var(--space-xl);
+        }
+        
+        .footer-column h4 {
+            margin-bottom: var(--space-md);
+            color: var(--color-accent-1);
+        }
+        
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+        }
+        
+        .footer-links a:hover {
+            color: var(--color-accent-2);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: var(--space-sm);
+        }
+        
+        .social-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition-base);
+        }
+        
+        .social-icon:hover {
+            background-color: var(--color-accent-1);
+            transform: translateY(-2px);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: var(--space-lg);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--color-neutral-white-70);
+            font-size: 12px;
+        }
+        
+        @media (max-width: 1199px) and (min-width: 768px) {
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 767px) {
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* === 模态框样式 (塔罗牌体验) === */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(26, 15, 61, 0.9);
+            backdrop-filter: blur(12px);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s;
+        }
+        
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal-content {
+            background-color: var(--color-primary-2);
+            border-radius: var(--radius-md);
+            padding: var(--space-xl);
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+            transform: translateY(20px);
+            transition: transform 0.4s ease;
+        }
+        
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+        
+        .modal-title {
+            margin-bottom: var(--space-lg);
+            color: var(--color-accent-1);
+        }
+        
+        .cards-container {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-lg);
+            margin: var(--space-xl) 0;
+        }
+        
+        .tarot-card {
+            width: 120px;
+            height: 180px;
+            border-radius: 8px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+        
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.6s ease-in-out;
+        }
+        
+        .tarot-card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+        
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+        }
+        
+        .card-front {
+            background: linear-gradient(135deg, var(--color-accent-1), var(--color-primary-1));
+            color: var(--color-primary-2);
+            transform: rotateY(180deg);
+        }
+        
+        .card-back {
+            background-color: var(--color-accent-2);
+            color: var(--color-neutral-white);
+        }
+        
+        .card-result {
+            margin: var(--space-lg) 0;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-actions {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-md);
+        }
+        
+        @media (max-width: 767px) {
+            .cards-container {
+                gap: var(--space-sm);
+            }
+            .tarot-card {
+                width: 100px;
+                height: 150px;
+            }
+            .modal-actions {
+                flex-direction: column;
+            }
+            .modal-actions .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 星空粒子背景 -->
+    <canvas id="starfield"></canvas>
+    
+    <!-- 旋转星盘背景 -->
+    <div class="star-disk"></div>
+    
+    <!-- 导航栏 -->
+    <nav class="navbar" id="navbar">
+        <div class="container nav-container">
+            <a href="#" class="logo">星穹秘境</a>
+            <div class="nav-links">
+                <a href="#home">首页</a>
+                <a href="#services">占卜服务</a>
+                <a href="#features">核心特色</a>
+                <a href="#testimonials">用户评价</a>
+                <a href="#download">下载APP</a>
+            </div>
+            <div class="nav-actions">
+                <button class="btn btn-primary btn-medium" id="downloadNavBtn">立即下载</button>
+                <button class="hamburger" id="hamburgerBtn" aria-label="打开菜单">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- 移动端侧边栏菜单 -->
+    <div class="mobile-nav" id="mobileNav">
+        <div class="mobile-nav-header">
+            <div class="logo">星穹秘境</div>
+            <button class="close-nav" id="closeNavBtn" aria-label="关闭菜单">×</button>
+        </div>
+        <div class="mobile-nav-links">
+            <a href="#home" class="mobile-nav-link">首页</a>
+            <a href="#services" class="mobile-nav-link">占卜服务</a>
+            <a href="#features" class="mobile-nav-link">核心特色</a>
+            <a href="#testimonials" class="mobile-nav-link">用户评价</a>
+            <a href="#download" class="mobile-nav-link">下载APP</a>
+            <button class="btn btn-primary btn-medium" id="mobileDownloadBtn" style="margin-top: var(--space-lg);">立即下载</button>
+        </div>
+    </div>
+    
+    <main>
+        <!-- 板块1：首屏英雄区 -->
+        <section class="hero-section" id="home">
+            <div class="container">
+                <h1 class="hero-title">探索你的星穹秘境</h1>
+                <p class="hero-subtitle">专业占卜师一对一，为你解答人生困惑</p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary btn-large" id="heroDownloadBtn">立即下载APP</button>
+                    <button class="btn btn-secondary btn-large" id="freeTarotBtn">免费抽1张塔罗牌</button>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 板块2：核心占卜服务 -->
+        <section class="services-section" id="services">
+            <div class="container">
+                <h2 class="section-title">热门占卜服务</h2>
+                <div class="services-grid">
+                    <div class="card service-card">
+                        <div class="service-icon">🃏</div>
+                        <h3>塔罗牌占卜</h3>
+                        <p>通过78张塔罗牌，揭示你当下的能量状态与未来可能的发展方向，适用于感情、事业、学业等具体问题。</p>
+                        <a href="#" class="btn btn-text">了解详情 →</a>
+                    </div>
+                    <div class="card service-card">
+                        <div class="service-icon">♈️</div>
+                        <h3>个人星盘解读</h3>
+                        <p>基于你的精确出生时间与地点，绘制专属星盘，深度解析你的性格、天赋、人生轨迹与潜在机遇。</p>
+                        <a href="#" class="btn btn-text">了解详情 →</a>
+                    </div>
+                    <div class="card service-card">
+                        <div class="service-icon">🐉</div>
+                        <h3>八字命理分析</h3>
+                        <p>传承千年的东方智慧，通过生辰八字分析你的命格、大运流年，提供趋吉避凶的人生建议。</p>
+                        <a href="#" class="btn btn-text">了解详情 →</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 板块3：APP核心特色 -->
+        <section class="features-section" id="features">
+            <div class="container">
+                <div class="features-content">
+                    <h2>为什么选择星穹秘境</h2>
+                    <div class="feature-list">
+                        <div class="feature-item">
+                            <div class="feature-icon">⭐</div>
+                            <div>
+                                <h4>认证专业大师</h4>
+                                <p>所有占卜师均通过严格资质审核与能力测试，平均从业经验超过8年。</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">🤝</div>
+                            <div>
+                                <h4>一对一深度沟通</h4>
+                                <p>并非机器解牌，而是与真人大师实时连线，针对你的具体情况深入分析。</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">🔒</div>
+                            <div>
+                                <h4>绝对隐私保护</h4>
+                                <p>端到端加密通讯，咨询记录随时删除，你的秘密只有你和大师知道。</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">📱</div>
+                            <div>
+                                <h4>随时随地开启</h4>
+                                <p>APP优化全平台体验，无论是在家、通勤还是旅行，都能即时连接大师。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="phone-mockup">
+                    <div class="mockup-img">
+                        <!-- APP界面预览 -->
+                        <div style="width:100%;height:100%;background:linear-gradient(135deg, #9D8DF1, #2D1B69);display:flex;align-items:center;justify-content:center;color:white;font-size:20px;font-weight:bold;">APP界面预览</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 板块4：用户真实评价 -->
+        <section class="testimonials-section" id="testimonials">
+            <div class="container">
+                <h2 class="section-title">用户真实反馈</h2>
+                <div class="testimonials-container" id="testimonialsContainer">
+                    <!-- 评价卡片将由JS动态生成 -->
+                </div>
+            </div>
+        </section>
+        
+        <!-- 板块5：下载引导区 -->
+        <section class="cta-section" id="download">
+            <div class="container">
+                <h2 class="cta-title">开启你的探索之旅</h2>
+                <p class="cta-subtitle">下载APP，免费获取专属今日运势</p>
+                <div class="cta-buttons">
+                    <button class="btn btn-primary btn-large" id="iosDownloadBtn">
+                        <i class="fab fa-apple" style="margin-right: 8px;"></i> iOS 下载
+                    </button>
+                    <button class="btn btn-primary btn-large" id="androidDownloadBtn">
+                        <i class="fab fa-android" style="margin-right: 8px;"></i> Android 下载
+                    </button>
+                </div>
+                <div class="cta-qr">
+                    扫描下载二维码
+                </div>
+            </div>
+        </section>
+        
+        <!-- 板块6：页脚 -->
+        <footer>
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-column">
+                        <h4>星穹秘境</h4>
+                        <p>致力于用古老的智慧与现代科技，为你提供专业、私密、有深度的命理咨询服务，照亮你人生的每一个十字路口。</p>
+                    </div>
+                    <div class="footer-column">
+                        <h4>快速链接</h4>
+                        <div class="footer-links">
+                            <a href="#home">首页</a>
+                            <a href="#services">占卜服务</a>
+                            <a href="#features">核心特色</a>
+                            <a href="#testimonials">用户评价</a>
+                            <a href="#download">下载APP</a>
+                        </div>
+                    </div>
+                    <div class="footer-column">
+                        <h4>联系我们</h4>
+                        <div class="footer-links">
+                            <a href="tel:400-123-4567">客服电话: 400-123-4567</a>
+                            <a href="mailto:support@starhorizon.com">邮箱: support@starhorizon.com</a>
+                            <p>服务时间: 9:00 - 22:00</p>
+                        </div>
+                    </div>
+                    <div class="footer-column">
+                        <h4>关注我们</h4>
+                        <div class="social-links">
+                            <a href="#" class="social-icon" aria-label="微信"><i class="fab fa-weixin"></i></a>
+                            <a href="#" class="social-icon" aria-label="微博"><i class="fab fa-weibo"></i></a>
+                            <a href="#" class="social-icon" aria-label="小红书"><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="copyright">
+                    <p>© 2024 星穹秘境 版权所有 | 本服务仅供娱乐，请理性看待命运指引</p>
+                </div>
+            </div>
+        </footer>
+    </main>
+    
+    <!-- 悬浮全局组件 -->
+    <div class="floating-components">
+        <div class="floating-btn" id="backToTop" title="返回顶部">
+            <i class="fas fa-chevron-up"></i>
+        </div>
+        <div class="floating-btn" id="onlineService" title="在线客服">
+            <i class="fas fa-comment-alt"></i>
+        </div>
+        <div class="floating-btn large" id="dailyFortune" title="每日运势">
+            <i class="fas fa-crystal-ball"></i>
+        </div>
+    </div>
+    
+    <!-- 免费塔罗体验模态框 -->
+    <div class="modal-overlay" id="tarotModal">
+        <div class="modal-content">
+            <h3 class="modal-title">免费塔罗牌体验</h3>
+            <p>请凭直觉选择一张牌，揭示你今日的指引</p>
+            <div class="cards-container">
+                <div class="tarot-card" data-card="0">
+                    <div class="card-inner">
+                        <div class="card-front">🃏</div>
+                        <div class="card-back">?</div>
+                    </div>
+                </div>
+                <div class="tarot-card" data-card="1">
+                    <div class="card-inner">
+                        <div class="card-front">🌟</div>
+                        <div class="card-back">?</div>
+                    </div>
+                </div>
+                <div class="tarot-card" data-card="2">
+                    <div class="card-inner">
+                        <div class="card-front">💖</div>
+                        <div class="card-back">?</div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-result" id="cardResult">请选择一张塔罗牌</div>
+            <div class="modal-actions">
+                <button class="btn btn-primary btn-medium" id="downloadForFull">下载APP查看完整解读</button>
+                <button class="btn btn-text btn-medium" id="closeModal">关闭</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // === 全局配置 ===
+        const config = {
+            starCount: { pc: 150, tablet: 100, mobile: 60 },
+            scrollThreshold: 100,
+            backToTopThreshold: 800
+        };
+        
+        // === 工具函数 ===
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => { clearTimeout(timeout); func(...args); };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+        
+        // === 1. 星空粒子背景 ===
+        function initStarfield() {
+            const canvas = document.getElementById('starfield');
+            const ctx = canvas.getContext('2d');
+            let stars = [];
+            let animationId = null;
+            let mouse = { x: 0, y: 0 };
+            
+            // 设置画布尺寸
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                initStars();
+            }
+            
+            // 初始化星星
+            function initStars() {
+                stars = [];
+                const count = window.innerWidth >= 1200 ? config.starCount.pc :
+                             window.innerWidth >= 768 ? config.starCount.tablet :
+                             config.starCount.mobile;
+                for (let i = 0; i < count; i++) {
+                    stars.push({
+                        x: Math.random() * canvas.width,
+                        y: Math.random() * canvas.height,
+                        size: Math.random() * 2 + 1,
+                        speedX: (Math.random() - 0.5) * 0.5,
+                        speedY: (Math.random() - 0.5) * 0.5,
+                        originalSpeedX: 0,
+                        originalSpeedY: 0
+                    });
+                }
+                // 保存初始速度用于鼠标交互后恢复
+                stars.forEach(star => {
+                    star.originalSpeedX = star.speedX;
+                    star.originalSpeedY = star.speedY;
+                });
+            }
+            
+            // 绘制星星
+            function drawStars() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+                stars.forEach(star => {
+                    ctx.beginPath();
+                    ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+            }
+            
+            // 更新星星位置
+            function updateStars() {
+                stars.forEach(star => {
+                    // 基础移动
+                    star.x += star.speedX;
+                    star.y += star.speedY;
+                    
+                    // 边界处理
+                    if (star.x < 0) star.x = canvas.width;
+                    if (star.x > canvas.width) star.x = 0;
+                    if (star.y < 0) star.y = canvas.height;
+                    if (star.y > canvas.height) star.y = 0;
+                    
+                    // 鼠标跟随效果 (仅在非移动端启用)
+                    if (window.innerWidth >= 768) {
+                        const dx = mouse.x - star.x;
+                        const dy = mouse.y - star.y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        const influenceRadius = 100;
+                        
+                        if (distance < influenceRadius) {
+                            const force = (1 - distance / influenceRadius) * 0.15;
+                            star.speedX += (dx / distance) * force;
+                            star.speedY += (dy / distance) * force;
+                        } else {
+                            // 逐渐恢复原速度
+                            star.speedX += (star.originalSpeedX - star.speedX) * 0.05;
+                            star.speedY += (star.originalSpeedY - star.speedY) * 0.05;
+                        }
+                    }
+                });
+            }
+            
+            // 动画循环
+            function animate() {
+                updateStars();
+                drawStars();
+                animationId = requestAnimationFrame(animate);
+            }
+            
+            // 鼠标移动监听
+            function handleMouseMove(e) {
+                if (window.innerWidth >= 768) { // 仅在非移动端启用
+                    mouse.x = e.clientX;
+                    mouse.y = e.clientY;
+                }
+            }
+            
+            // 初始化
+            resizeCanvas();
+            animate();
+            window.addEventListener('resize', debounce(resizeCanvas, 250));
+            window.addEventListener('mousemove', handleMouseMove);
+            
+            // 清理函数
+            return () => {
+                if (animationId) cancelAnimationFrame(animationId);
+                window.removeEventListener('resize', resizeCanvas);
+                window.removeEventListener('mousemove', handleMouseMove);
+            };
+        }
+        
+        // === 2. 导航栏滚动效果 ===
+        function initNavbarScroll() {
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', debounce(() => {
+                if (window.scrollY > config.scrollThreshold) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            }, 10));
+        }
+        
+        // === 3. 移动端汉堡菜单 ===
+        function initMobileMenu() {
+            const hamburgerBtn = document.getElementById('hamburgerBtn');
+            const closeNavBtn = document.getElementById('closeNavBtn');
+            const mobileNav = document.getElementById('mobileNav');
+            
+            hamburgerBtn.addEventListener('click', () => {
+                mobileNav.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+            closeNavBtn.addEventListener('click', () => {
+                mobileNav.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+            // 点击菜单链接也关闭菜单
+            mobileNav.querySelectorAll('.mobile-nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileNav.classList.remove('active');
+                    document.body.style.overflow = '';
+                });
+            });
+        }
+        
+        // === 4. 返回顶部按钮 ===
+        function initBackToTop() {
+            const backToTopBtn = document.getElementById('backToTop');
+            window.addEventListener('scroll', debounce(() => {
+                if (window.scrollY > config.backToTopThreshold) {
+                    backToTopBtn.classList.add('show');
+                } else {
+                    backToTopBtn.classList.remove('show');
+                }
+            }, 10));
+            
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
+        
+        // === 5. 免费塔罗牌体验模态框 ===
+        function initTarotModal() {
+            const freeTarotBtn = document.getElementById('freeTarotBtn');
+            const tarotModal = document.getElementById('tarotModal');
+            const closeModalBtn = document.getElementById('closeModal');
+            const tarotCards = document.querySelectorAll('.tarot-card');
+            const cardResult = document.getElementById('cardResult');
+            const downloadBtn = document.getElementById('downloadForFull');
+            
+            const cardMeanings = [
+                "正位的愚者：新的开始，冒险精神，无限可能。今天适合跳出常规，拥抱未知的旅程。",
+                "正位的星星：希望与灵感，心灵平静，目标明确。保持信心，你的愿望正在路上。",
+                "正位的恋人：和谐关系，重要选择，价值观结合。关注人际与内心的共鸣。"
+            ];
+            
+            let cardSelected = false;
+            
+            function openModal() {
+                tarotModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                resetCards();
+            }
+            
+            function closeModal() {
+                tarotModal.classList.remove('active');
+                document.body.style.overflow = '';
+                setTimeout(resetCards, 400); // 等待模态框关闭动画完成
+            }
+            
+            function resetCards() {
+                tarotCards.forEach(card => {
+                    card.classList.remove('flipped');
+                    card.style.opacity = '1';
+                    card.style.pointerEvents = 'auto';
+                });
+                cardResult.textContent = '请选择一张塔罗牌';
+                cardSelected = false;
+            }
+            
+            function selectCard(cardElement, index) {
+                if (cardSelected) return;
+                cardSelected = true;
+                cardElement.classList.add('flipped');
+                // 淡出其他卡片
+                tarotCards.forEach(card => {
+                    if (card !== cardElement) {
+                        card.style.opacity = '0.3';
+                        card.style.pointerEvents = 'none';
+                    }
+                });
+                // 显示结果
+                setTimeout(() => {
+                    cardResult.textContent = cardMeanings[index];
+                }, 600); // 与翻转动画时长匹配
+            }
+            
+            freeTarotBtn.addEventListener('click', openModal);
+            closeModalBtn.addEventListener('click', closeModal);
+            downloadBtn.addEventListener('click', () => {
+                alert('跳转到应用商店下载页面（模拟）');
+                closeModal();
+            });
+            tarotModal.addEventListener('click', (e) => {
+                if (e.target === tarotModal) closeModal();
+            });
+            tarotCards.forEach((card, index) => {
+                card.addEventListener('click', () => selectCard(card, index));
+            });
+        }
+        
+        // === 6. 用户评价轮播数据与生成 ===
+        function initTestimonials() {
+            const testimonials = [
+                { name: '小雨', tag: '塔罗牌占卜', content: '大师解读得非常准，给了我很多感情上的启发，现在心态平和多了。', avatarColor: '#FF9800', avatarText: '雨' },
+                { name: 'Alex', tag: '星盘解读', content: '第一次这么清晰地了解自己的天赋和短板，对职业规划帮助巨大！', avatarColor: '#9C27B0', avatarText: 'A' },
+                { name: '星辰大海', tag: '八字命理', content: '师傅很专业，说的很多事都对应上了。给了很实际的建议，不是泛泛而谈。', avatarColor: '#2196F3', avatarText: '星' },
+                { name: 'Luna', tag: '塔罗牌占卜', content: '很棒的体验！抽到的牌和我的现状完全吻合，指引的方向也很明确。', avatarColor: '#4CAF50', avatarText: 'L' },
+                { name: '追风者', tag: '综合咨询', content: '同时尝试了塔罗和星盘，不同角度分析但结论很一致，让我更确信了。', avatarColor: '#F44336', avatarText: '追' }
+            ];
+            
+            const container = document.getElementById('testimonialsContainer');
+            const heights = [200, 240, 220, 260, 200]; // 不同高度增加瀑布流效果
+            
+            testimonials.forEach((testimonial, index) => {
+                const card = document.createElement('div');
+                card.className = 'card testimonial-card';
+                card.style.height = `${heights[index]}px`;
+                card.innerHTML = `
+                    <div class="user-info">
+                        <div class="user-avatar" style="background-color: ${testimonial.avatarColor};">${testimonial.avatarText}</div>
+                        <div>
+                            <strong>${testimonial.name}</strong>
+                            <div style="font-size: 12px; color: var(--color-accent-2);">用户</div>
+                        </div>
+                    </div>
+                    <p class="testimonial-content">"${testimonial.content}"</p>
+                    <span class="testimonial-tag">${testimonial.tag}</span>
+                `;
+                container.appendChild(card);
+            });
+            
+            // 简单自动轮播逻辑
+            let scrollPosition = 0;
+            const scrollSpeed = 0.5; // 像素/帧
+            let animationId = null;
+            
+            function autoScroll() {
+                if (container.scrollLeft >= container.scrollWidth - container.clientWidth) {
+                    scrollPosition = 0;
+                } else {
+                    scrollPosition += scrollSpeed;
+                }
+                container.scrollLeft = scrollPosition;
+                animationId = requestAnimationFrame(autoScroll);
+            }
+            
+            // 鼠标悬停时暂停
+            container.addEventListener('mouseenter', () => {
+                if (animationId) cancelAnimationFrame(animationId);
+            });
+            container.addEventListener('mouseleave', () => {
+                if (!animationId) animationId = requestAnimationFrame(autoScroll);
+            });
+            
+            // 移动端不自动轮播
+            if (window.innerWidth >= 768) {
+                animationId = requestAnimationFrame(autoScroll);
+            }
+        }
+        
+        // === 7. 悬浮组件点击事件 ===
+        function initFloatingButtons() {
+            document.getElementById('onlineService').addEventListener('click', () => {
+                alert('在线客服窗口（模拟）\n客服工作时间：9:00-22:00\n您也可以拨打客服电话：400-123-4567');
+            });
+            
+            document.getElementById('dailyFortune').addEventListener('click', () => {
+                const fortunes = [
+                    "今日运势：星光闪耀，宜主动沟通，可能会有意外惊喜哦！",
+                    "今日运势：新月将至，适合规划新目标，但需注意细节。",
+                    "今日运势：贵人运强，可寻求合作，但需保持谦逊。",
+                    "今日运势：情感能量充沛，适合修复关系或表达心意。"
+                ];
+                const randomFortune = fortunes[Math.floor(Math.random() * fortunes.length)];
+                alert(randomFortune);
+            });
+        }
+        
+        // === 8. 下载按钮功能 ===
+        function initDownloadButtons() {
+            const downloadButtons = [
+                document.getElementById('heroDownloadBtn'),
+                document.getElementById('downloadNavBtn'),
+                document.getElementById('mobileDownloadBtn'),
+                document.getElementById('iosDownloadBtn'),
+                document.getElementById('androidDownloadBtn')
+            ];
+            
+            downloadButtons.forEach(btn => {
+                if (btn) {
+                    btn.addEventListener('click', () => {
+                        alert('下载功能演示\n在真实环境中，这里会跳转到应用商店下载页面。\n\n您可以选择下载平台：\n1. iOS: 前往App Store\n2. Android: 前往Google Play或应用商店');
+                    });
+                }
+            });
+        }
+        
+        // === 9. 页面滚动动画 ===
+        function initScrollAnimations() {
+            // 使用 Intersection Observer 实现滚动淡入动画
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+            
+            // 观察需要动画的区块
+            const sectionsToAnimate = document.querySelectorAll('.services-section, .features-section, .testimonials-section, .cta-section');
+            sectionsToAnimate.forEach(section => {
+                section.style.opacity = '0';
+                section.style.transform = 'translateY(20px)';
+                section.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+                observer.observe(section);
+            });
+            
+            // 手机样机滑入动画
+            const phoneMockup = document.querySelector('.phone-mockup');
+            if (phoneMockup) {
+                const phoneObserver = new IntersectionObserver((entries) => {
+                    if (entries[0].isIntersecting) {
+                        phoneMockup.style.opacity = '1';
+                        phoneMockup.style.transform = 'translateX(0)';
+                        phoneObserver.unobserve(phoneMockup);
+                    }
+                }, { threshold: 0.5 });
+                phoneMockup.style.opacity = '0';
+                phoneMockup.style.transform = 'translateX(100px)';
+                phoneMockup.style.transition = 'opacity 0.8s ease-out 0.2s, transform 0.8s ease-out 0.2s';
+                phoneObserver.observe(phoneMockup);
+            }
+        }
+        
+        // === 10. 导航链接平滑滚动 ===
+        function initSmoothScroll() {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        }
+        
+        // === 初始化所有功能 ===
+        document.addEventListener('DOMContentLoaded', () => {
+            const cleanupStarfield = initStarfield();
+            initNavbarScroll();
+            initMobileMenu();
+            initBackToTop();
+            initTarotModal();
+            initTestimonials();
+            initFloatingButtons();
+            initDownloadButtons();
+            initScrollAnimations();
+            initSmoothScroll();
+            
+            // 页面卸载时清理
+            window.addEventListener('beforeunload', () => {
+                if (cleanupStarfield) cleanupStarfield();
+            });
+            
+            // 控制台欢迎信息
+            console.log('%c✨ 星穹秘境占卜APP官网已加载完成 ✨', 'color: #D4AF37; font-size: 16px; font-weight: bold;');
+            console.log('%c探索星穹秘境，照亮人生之路', 'color: #9D8DF1; font-size: 14px;');
+        });
+    </script>
+</body>
+</html>
